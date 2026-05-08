@@ -13,7 +13,7 @@ export default function Home() {
         </p>
 
         <p className="mb-5">
-          Then $9.99/month
+          Then $7.99/month
         </p>
 
         <SubscriptionButton />
