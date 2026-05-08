@@ -1,0 +1,85 @@
+import { generateAccessToken } from "@/lib/paypal";
+import { NextResponse } from "next/server";
+
+export async function POST(req: Request) {
+  try {
+    const { productId } =
+      await req.json();
+
+    const token =
+      await generateAccessToken();
+
+    const response = await fetch(
+      `${process.env.PAYPAL_BASE_URL}/v1/billing/plans`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          product_id: productId,
+          name: "Premium Plan",
+          description:
+            "3 day trial then monthly billing",
+
+          billing_cycles: [
+            {
+              frequency: {
+                interval_unit: "DAY",
+                interval_count: 1,
+              },
+              tenure_type: "TRIAL",
+              sequence: 1,
+              total_cycles: 3,
+
+              pricing_scheme: {
+                fixed_price: {
+                  value: "0",
+                  currency_code: "USD",
+                },
+              },
+            },
+
+            {
+              frequency: {
+                interval_unit: "MONTH",
+                interval_count: 1,
+              },
+
+              tenure_type: "REGULAR",
+              sequence: 2,
+              total_cycles: 0,
+
+              pricing_scheme: {
+                fixed_price: {
+                  value: "9.99",
+                  currency_code: "USD",
+                },
+              },
+            },
+          ],
+
+          payment_preferences: {
+            auto_bill_outstanding: true,
+            payment_failure_threshold: 3,
+          },
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    return NextResponse.json(data);
+  }catch (error: any) {
+  console.error("CREATE PLAN ERROR:", error);
+
+  return Response.json(
+    {
+      error: "Plan creation failed",
+      details: error?.message || error,
+    },
+    { status: 500 }
+  );
+  }
+}
