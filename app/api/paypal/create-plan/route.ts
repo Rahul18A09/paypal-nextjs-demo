@@ -23,42 +23,91 @@ export async function POST(req: Request) {
           description:
             "3 day trial then monthly billing",
 
-          billing_cycles: [
-            {
-              frequency: {
-                interval_unit: "DAY",
-                interval_count: 1,
-              },
-              tenure_type: "TRIAL",
-              sequence: 1,
-              total_cycles: 3,
 
-              pricing_scheme: {
-                fixed_price: {
-                  value: "0",
-                  currency_code: "USD",
-                },
-              },
-            },
 
-            {
-              frequency: {
-                interval_unit: "MONTH",
-                interval_count: 1,
-              },
+            // billing cycle
 
-              tenure_type: "REGULAR",
-              sequence: 2,
-              total_cycles: 0,
+          // billing_cycles: [
+          //   {
+          //     frequency: {
+          //       interval_unit: "DAY",
+          //       interval_count: 1,
+          //     },
+          //     tenure_type: "TRIAL",
+          //     sequence: 1,
+          //     total_cycles: 3,
 
-              pricing_scheme: {
-                fixed_price: {
-                  value: "9.99",
-                  currency_code: "USD",
-                },
-              },
-            },
-          ],
+          //     pricing_scheme: {
+          //       fixed_price: {
+          //         value: "0",
+          //         currency_code: "USD",
+          //       },
+          //     },
+          //   },
+
+          //   {
+          //     frequency: {
+          //       interval_unit: "MONTH",
+          //       interval_count: 1,
+          //     },
+
+          //     tenure_type: "REGULAR",
+          //     sequence: 2,
+          //     total_cycles: 0,
+
+          //     pricing_scheme: {
+          //       fixed_price: {
+          //         value: "9.99",
+          //         currency_code: "USD",
+          //       },
+          //     },
+          //   },
+          // ],
+
+
+
+
+billing_cycles: [
+  {
+    frequency: {
+      interval_unit: "DAY",
+      interval_count: 3,
+    },
+
+    tenure_type: "TRIAL",
+
+    sequence: 1,
+
+    total_cycles: 1,
+
+    pricing_scheme: {
+      fixed_price: {
+        value: "0",
+        currency_code: "USD",
+      },
+    },
+  },
+
+  {
+    frequency: {
+      interval_unit: "MONTH",
+      interval_count: 1,
+    },
+
+    tenure_type: "REGULAR",
+
+    sequence: 2,
+
+    total_cycles: 0,
+
+    pricing_scheme: {
+      fixed_price: {
+        value: "11.99",
+        currency_code: "USD",
+      },
+    },
+  },
+],
 
           payment_preferences: {
             auto_bill_outstanding: true,

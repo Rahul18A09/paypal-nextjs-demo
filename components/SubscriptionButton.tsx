@@ -6,7 +6,7 @@ import {
 } from "@paypal/react-paypal-js";
 
 const PLAN_ID =
-  "P-6PR49564B1288471TNH6ZEZA";
+  "P-5E7550149E115745YNH64DII";
 
 export default function SubscriptionButton() {
   return (
@@ -76,7 +76,7 @@ export default function SubscriptionButton() {
     return actions.subscription
       .create({
         plan_id:
-          "P-6PR49564B1288471TNH6ZEZA",
+          "P-5E7550149E115745YNH64DII",
       })
       .then((subscriptionId) => {
         console.log(
