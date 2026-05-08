@@ -68,7 +68,6 @@ export default function SubscriptionButton() {
         }}
       /> */}
 
-
       <PayPalButtons
   createSubscription={(data, actions) => {
     console.log("Creating subscription...");
