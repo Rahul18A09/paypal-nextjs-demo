@@ -1,7 +1,7 @@
 import { generateAccessToken } from "@/lib/paypal";
 import { NextResponse } from "next/server";
 
-export async function POST() {
+export async function GET() {
   try {
     const token =
       await generateAccessToken();

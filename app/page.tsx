@@ -1,23 +1,22 @@
-import SubscriptionButton from "@/components/SubscriptionButton";
+import Link from "next/link";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <div className="border p-10 rounded-xl shadow-xl">
-        <h1 className="text-3xl font-bold mb-4">
-          Premium Membership
-        </h1>
+    <div className="flex flex-col items-center justify-center h-[80vh]">
+      <h1 className="text-6xl font-bold">
+        PayPal SaaS Demo
+      </h1>
 
-        <p className="mb-3">
-          3 Days Free Trial
-        </p>
+      <p className="mt-5 text-gray-500">
+        Premium subscription demo using PayPal and Next.js.
+      </p>
 
-        <p className="mb-5">
-          Then $7.99/month
-        </p>
-
-        <SubscriptionButton />
-      </div>
-    </main>
+      <Link
+        href="/pricing"
+        className="mt-8 bg-white text-black px-6 py-3 rounded-xl font-semibold"
+      >
+        View Pricing
+      </Link>
+    </div>
   );
 }

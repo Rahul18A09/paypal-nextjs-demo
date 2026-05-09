@@ -1,11 +1,9 @@
 import { generateAccessToken } from "@/lib/paypal";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   try {
-    const { productId } =
-      await req.json();
-
+    
     const token =
       await generateAccessToken();
 
@@ -18,7 +16,8 @@ export async function POST(req: Request) {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          product_id: productId,
+          product_id:
+          "PROD-3EW82341K77349916",
           name: "Premium Plan",
           description:
             "3 day trial then monthly billing",

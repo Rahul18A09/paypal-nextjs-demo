@@ -5,36 +5,30 @@ import {
   PayPalScriptProvider,
 } from "@paypal/react-paypal-js";
 
-const PLAN_ID =
-  "P-5E7550149E115745YNH64DII";
-
 export default function SubscriptionButton() {
   return (
     <PayPalScriptProvider
       options={{
         clientId:
           process.env
-            .NEXT_PUBLIC_PAYPAL_CLIENT_ID || "",
-
+            .NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
         vault: true,
-
         intent: "subscription",
       }}
     >
+      <PayPalButtons
+        createSubscription={(data, actions) => {
+  console.log(
+    "PLAN ID:",
+    process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID
+  );
 
-
-
-      {/* paypal button here */}
-
-      {/* <PayPalButtons
-        createSubscription={(
-          data,
-          actions
-        ) => {
-          return actions.subscription.create({
-            plan_id:" P-7SL62049N76752743NH6WW7Y",
-          });
-        }}
+  return actions.subscription.create({
+    plan_id:
+      process.env
+        .NEXT_PUBLIC_PAYPAL_PLAN_ID!,
+  });
+}}
 
         onApprove={async (data) => {
           await fetch(
@@ -59,67 +53,12 @@ export default function SubscriptionButton() {
           );
         }}
 
-        onError={(err) => {
-          console.log(err);
+       onError={(err) => {
+  console.log("PAYPAL ERROR:", err);
 
-          alert(
-            "Something went wrong"
-          );
-        }}
-      /> */}
-
-
- <PayPalButtons
-  createSubscription={(data, actions) => {
-    console.log("Creating subscription...");
-
-    return actions.subscription
-      .create({
-        plan_id:
-          "P-5E7550149E115745YNH64DII",
-      })
-      .then((subscriptionId) => {
-        console.log(
-          "Subscription ID:",
-          subscriptionId
-        );
-
-        return subscriptionId;
-      })
-      .catch((err) => {
-        console.error(
-          "PAYPAL SUBSCRIPTION ERROR:",
-          err
-        );
-
-        alert(JSON.stringify(err));
-
-        throw err;
-      });
-  }}
-
-  onApprove={(data) => {
-    console.log("APPROVED:", data);
-
-    alert(
-      "User subscribed successfully!"
-    );
-  }}
-
-  onError={(err) => {
-    console.error(
-      "PAYPAL BUTTON ERROR:",
-      err
-    );
-
-    alert(
-      "PayPal Error: " +
-        JSON.stringify(err)
-    );
-  }}
-/>
-
-
+  alert(JSON.stringify(err));
+}}
+      />
     </PayPalScriptProvider>
   );
 }

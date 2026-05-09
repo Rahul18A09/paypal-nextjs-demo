@@ -1,14 +1,26 @@
 import { generateAccessToken } from "@/lib/paypal";
+
+import { connectDB } from "@/lib/mongodb";
+
+import Subscription from "@/models/Subscription";
+
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request
+) {
   try {
     const { subscriptionID } =
       await req.json();
 
+    // CONNECT DATABASE
+    await connectDB();
+
+    // PAYPAL ACCESS TOKEN
     const token =
       await generateAccessToken();
 
+    // VERIFY SUBSCRIPTION
     const response = await fetch(
       `${process.env.PAYPAL_BASE_URL}/v1/billing/subscriptions/${subscriptionID}`,
       {
@@ -18,19 +30,63 @@ export async function POST(req: Request) {
       }
     );
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
-    /*
-      SAVE IN DATABASE HERE
-    */
+    console.log(
+      "PAYPAL SUBSCRIPTION:",
+      data
+    );
 
-    return NextResponse.json(data);
+    // SAVE TO DATABASE
+    const savedSubscription =
+      await Subscription.create({
+        subscriptionId: data.id,
+
+        planId: data.plan_id,
+
+        status: data.status,
+
+        email:
+          data.subscriber
+            ?.email_address,
+
+        payerId:
+          data.subscriber
+            ?.payer_id,
+
+        startTime:
+          data.start_time,
+
+        nextBillingTime:
+          data.billing_info
+            ?.next_billing_time,
+      });
+
+    console.log(
+      "SAVED:",
+      savedSubscription
+    );
+
+    return NextResponse.json({
+      success: true,
+
+      data: savedSubscription,
+    });
   } catch (error) {
+    console.log(
+      "VERIFY ERROR:",
+      error
+    );
+
     return NextResponse.json(
       {
+        success: false,
+
         error:
           "Verification failed",
       },
+
       { status: 500 }
     );
   }
