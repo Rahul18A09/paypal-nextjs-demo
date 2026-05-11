@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav className="flex items-center justify-between px-8 py-4 border-b">
       <h1 className="text-2xl font-bold">
-        PayPal SaaS
+        PayPal Demo
       </h1>
 
       <div className="flex gap-5">

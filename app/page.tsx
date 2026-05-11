@@ -4,7 +4,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col items-center justify-center h-[80vh]">
       <h1 className="text-6xl font-bold">
-        PayPal SaaS Demo
+        PayPal Demo
       </h1>
 
       <p className="mt-5 text-gray-500">

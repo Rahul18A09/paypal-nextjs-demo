@@ -59,6 +59,8 @@ export default function SubscriptionButton() {
   alert(JSON.stringify(err));
 }}
       />
+
+      {/* Paypal payment button */}
     </PayPalScriptProvider>
   );
 }
