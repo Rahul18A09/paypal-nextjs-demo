@@ -18,179 +18,159 @@ const premiumFeatures = [
 ];
 
 export default function PricingCard() {
-
-
   const [selectedPlan, setSelectedPlan] = useState("express");
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const planIds = {
-  monthly: "YOUR_MONTHLY_PLAN_ID",
-  express: "YOUR_EXPRESS_PLAN_ID",
-};
+    monthly: "YOUR_MONTHLY_PLAN_ID",
+    express: "YOUR_EXPRESS_PLAN_ID",
+  };
 
+  const selectedPlanId =
+    selectedPlan === "monthly" ? planIds.monthly : planIds.express;
 
-const selectedPlanId =
-  selectedPlan === "monthly"
-    ? planIds.monthly
-    : planIds.express;
-
-
-  const buttonPrice =
-  selectedPlan === "monthly"
-    ? "$11.99"
-    : "$7.99";
-
+  const buttonPrice = selectedPlan === "monthly" ? "$11.99" : "$7.99";
 
   return (
+    <>
+      <section className="py-16 px-4">
+        <div className="mx-auto max-w-[760px] rounded-[16px] border border-[#f1cfd5] overflow-hidden bg-white">
+          {/* HEADER */}
+          <div className="px-8 py-8">
+            <h2 className="text-[54px] font-bold text-[#071b4b]">Premium</h2>
+          </div>
 
-    <section className="py-16 px-4">
-      <div className="mx-auto max-w-[760px] rounded-[16px] border border-[#f1cfd5] overflow-hidden bg-white">
-        {/* HEADER */}
-        <div className="px-8 py-8">
-          <h2 className="text-[54px] font-bold text-[#071b4b]">Premium</h2>
-        </div>
+          {/* PLAN OPTIONS */}
+          <div className="border-t border-[#f1cfd5] border-b border-[#f1cfd5] grid grid-cols-2">
+            {/* MONTHLY */}
+            <div
+              onClick={() => setSelectedPlan("monthly")}
+              className={`
+              flex items-center gap-3 px-8 py-6 cursor-pointer transition
+              ${selectedPlan === "monthly" ? "bg-[#fffafb]" : "bg-white"}
+            `}
+            >
+              <div
+                className="
+              w-5 h-5 rounded-full border-2
+              border-[#d94d68]
+              flex items-center justify-center
+            "
+              >
+                {selectedPlan === "monthly" && (
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#d94d68]"></div>
+                )}
+              </div>
 
-        {/* PLAN OPTIONS */}
-        <div className="border-t border-[#f1cfd5] border-b border-[#f1cfd5] grid grid-cols-2">
-          {/* MONTHLY */}
-          {/* <div className="flex items-center gap-3 px-8 py-6">
-                <div className="w-5 h-5 rounded-full border border-gray-400"></div>
+              <div>
+                <div className="text-[48px] font-bold text-[#1600b5] leading-none">
+                  $11.99
+                </div>
 
-                <div>
-                    <div className="text-[48px] font-bold text-[#1600b5] leading-none">
-                        $14.99
+                <p className="text-[18px] text-gray-500">/Month</p>
+              </div>
+            </div>
+
+            {/* EXPRESS */}
+            <div
+              onClick={() => setSelectedPlan("express")}
+              className={`
+              flex items-center gap-3 px-8 py-6 cursor-pointer transition
+              ${selectedPlan === "express" ? "bg-[#fffafb]" : "bg-white"}
+            `}
+            >
+              <div
+                className="
+              w-5 h-5 rounded-full border-2
+              border-[#d94d68]
+              flex items-center justify-center
+            "
+              >
+                {selectedPlan === "express" && (
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#d94d68]"></div>
+                )}
+              </div>
+
+              <div>
+                <div className="text-[48px] font-bold text-[#1600b5] leading-none">
+                  $7.99
+                </div>
+
+                <p className="text-[18px] text-gray-500">3-Day Express</p>
+              </div>
+            </div>
+          </div>
+
+          {/* FEATURES */}
+          <div className="px-8 py-8">
+            <ul className="space-y-8 pb-8">
+              {premiumFeatures.map((feature, index) => (
+                <li key={index} className="flex items-start gap-5">
+                  <div className="mt-1 min-w-[24px]">
+                    <div className="w-6 h-6 rounded-full border border-[#d94d68] flex items-center justify-center">
+                      <span className="text-[#d94d68] text-[14px]">✓</span>
                     </div>
-
-                    <p className="text-[18px]">
-                        /Month
-                    </p>
-                </div>
-            </div> */}
-    
-
-
-{/* MONTHLY */}
-<div
-    onClick={() => setSelectedPlan("monthly")}
-    className={`
-        flex items-center gap-3 px-8 py-6 cursor-pointer transition
-        ${selectedPlan === "monthly"
-            ? "bg-[#fffafb]"
-            : "bg-white"}
-    `}
->
-    {/* RADIO */}
-    <div className="
-        w-5 h-5 rounded-full border-2
-        border-[#d94d68]
-        flex items-center justify-center
-    ">
-        {selectedPlan === "monthly" && (
-            <div className="w-2.5 h-2.5 rounded-full bg-[#d94d68]"></div>
-        )}
-    </div>
-
-    <div>
-        <div className="text-[48px] font-bold text-[#1600b5] leading-none">
-            $11.99
-        </div>
-
-        <p className="text-[18px] text-gray-500">
-            /Month
-        </p>
-    </div>
-</div>
-
-
-
-{/* EXPRESS */}
-<div
-    onClick={() => setSelectedPlan("express")}
-    className={`
-        flex items-center gap-3 px-8 py-6 cursor-pointer transition
-        ${selectedPlan === "express"
-            ? "bg-[#fffafb]"
-            : "bg-white"}
-    `}
->
-    {/* RADIO */}
-    <div className="
-        w-5 h-5 rounded-full border-2
-        border-[#d94d68]
-        flex items-center justify-center
-    ">
-        {selectedPlan === "express" && (
-            <div className="w-2.5 h-2.5 rounded-full bg-[#d94d68]"></div>
-        )}
-    </div>
-
-    <div>
-        <div className="text-[48px] font-bold text-[#1600b5] leading-none">
-            $7.99
-        </div>
-
-        <p className="text-[18px] text-gray-500">
-            3-Day Express
-        </p>
-    </div>
-</div>
-
-</div>
-
-        {/* FEATURES */}
-        <div className="px-8 py-8">
-          <ul className="space-y-8 pb-8">
-            {premiumFeatures.map((feature, index) => (
-              <li key={index} className="flex items-start gap-5">
-                {/* CHECK ICON */}
-                <div className="mt-1 min-w-[24px]">
-                  <div className="w-6 h-6 rounded-full border border-[#d94d68] flex items-center justify-center">
-                    <span className="text-[#d94d68] text-[14px]">✓</span>
                   </div>
-                </div>
 
-                {/* TEXT */}
-                <p className="text-[20px] leading-[1.8] text-black">
-                  {feature}
-                </p>
-              </li>
-            ))}
-          </ul>
+                  <p className="text-[20px] leading-[1.8] text-black">
+                    {feature}
+                  </p>
+                </li>
+              ))}
+            </ul>
 
+            {/* BUTTON */}
+            <button
+              onClick={() => setShowCheckoutModal(true)}
+              className="
+              w-full
+              bg-[#BE4763]
+              hover:bg-[#a53d56]
+              transition
+              text-white
+              py-5
+              rounded-full
+              text-[22px]
+              font-semibold
+            "
+            >
+              Start for {selectedPlan === "monthly" ? "$11.99" : "$7.99"}
+            </button>
 
-
-<button
-  onClick={() => setShowCheckoutModal(true)}
-  className="
-    w-full
-    bg-[#BE4763]
-    hover:bg-[#a53d56]
-    transition
-    text-white
-    py-5
-    rounded-full
-    text-[22px]
-    font-semibold
-  "
->
-  Start for {selectedPlan === "monthly" ? "$11.99" : "$7.99"}
-</button>
-
-
-
-          {/* <SubscriptionButton /> */}
-
-          {/* PAYMENT ICONS */}
-          <div className="flex justify-center items-center gap-6 mt-6">
-            <img src={visa.src} className="h-8" alt="visa" />
-            <img src={mastercard.src} className="h-10" alt="mastercard" />
-            <img src={paypal.src} className="h-10" alt="paypal" />
+            {/* PAYMENT ICONS */}
+            <div className="flex justify-center items-center gap-6 mt-6">
+              <img src={visa.src} className="h-8" alt="visa" />
+              <img src={mastercard.src} className="h-10" alt="mastercard" />
+              <img src={paypal.src} className="h-10" alt="paypal" />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}   
+      </section>
 
+      {/* CHECKOUT MODAL */}
+      {showCheckoutModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-2xl p-6 w-[90%] max-w-[500px]">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-black">Checkout</h2>
+
+              <button
+                onClick={() => setShowCheckoutModal(false)}
+                className="text-2xl font-bold text-black"
+              >
+                ×
+              </button>
+            </div>
+      
+            {/* <SubscriptionButton planId={selectedPlanId} /> */}
+            <SubscriptionButton
+  planId={process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID!}
+/>
+
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
