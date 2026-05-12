@@ -1,16 +1,29 @@
 import { generateAccessToken } from "@/lib/paypal";
+import { PAYPAL_BASE_URL } from "@/lib/env";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
     const { subscriptionID } =
       await req.json();
+    const normalizedSubscriptionId =
+      subscriptionID?.trim();
+
+    if (!normalizedSubscriptionId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "subscriptionID is required",
+        },
+        { status: 400 }
+      );
+    }
 
     const accessToken =
       await generateAccessToken();
 
-    await fetch(
-      `${process.env.PAYPAL_BASE_URL}/v1/billing/subscriptions/${subscriptionID}/cancel`,
+    const response = await fetch(
+      `${PAYPAL_BASE_URL}/v1/billing/subscriptions/${normalizedSubscriptionId}/cancel`,
       {
         method: "POST",
 
@@ -28,12 +41,26 @@ export async function POST(req: Request) {
       }
     );
 
+    if (!response.ok) {
+      const data = await response.json();
+
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            data?.message ||
+            "Cancellation failed",
+        },
+        { status: response.status }
+      );
+    }
+
     return NextResponse.json({
       success: true,
       message:
         "Subscription cancelled",
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       {
         success: false,

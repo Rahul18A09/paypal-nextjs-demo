@@ -1,37 +1,43 @@
 import mongoose from "mongoose";
 
-const userSchema =
-  new mongoose.Schema(
-    {
-      name: {
-        type: String,
-      },
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+    lowercase: true,
+    trim: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  plan: {
+    type: String,
+    enum: ["free", "premium"],
+    default: "free",
+  },
+  subscriptionStatus: {
+    type: String,
+    enum: ["active", "cancelled", "none"],
+    default: "none",
+  },
+  paypalSubscriptionId: {
+    type: String,
+    index: true,
+  },
+  trialStart: {
+    type: Date,
+  },
+  trialEnd: {
+    type: Date,
+  },
+});
 
-      email: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-
-      isPremium: {
-        type: Boolean,
-        default: false,
-      },
-
-      subscriptionId: {
-        type: String,
-      },
-    },
-    {
-      timestamps: true,
-    }
-  );
-
-const User =
-  mongoose.models.User ||
-  mongoose.model(
-    "User",
-    userSchema
-  );
-
-export default User;
+export default mongoose.models.User ||
+  mongoose.model("User", UserSchema);

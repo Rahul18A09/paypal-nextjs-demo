@@ -52,7 +52,7 @@ export async function generateAccessToken(): Promise<string> {
 export async function paypalRequest(
   endpoint: string,
   method = "GET",
-  body?: any
+  body?: Record<string, unknown>
 ) {
   try {
     const accessToken =

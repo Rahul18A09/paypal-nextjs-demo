@@ -1,4 +1,5 @@
 import { generateAccessToken } from "@/lib/paypal";
+import { PAYPAL_BASE_URL } from "@/lib/env";
 
 import { connectDB } from "@/lib/mongodb";
 
@@ -12,6 +13,18 @@ export async function POST(
   try {
     const { subscriptionID } =
       await req.json();
+    const normalizedSubscriptionId =
+      subscriptionID?.trim();
+
+    if (!normalizedSubscriptionId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "subscriptionID is required",
+        },
+        { status: 400 }
+      );
+    }
 
     // CONNECT DATABASE
     await connectDB();
@@ -22,7 +35,7 @@ export async function POST(
 
     // VERIFY SUBSCRIPTION
     const response = await fetch(
-      `${process.env.PAYPAL_BASE_URL}/v1/billing/subscriptions/${subscriptionID}`,
+      `${PAYPAL_BASE_URL}/v1/billing/subscriptions/${normalizedSubscriptionId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -32,6 +45,18 @@ export async function POST(
 
     const data =
       await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            data?.message ||
+            "Failed to verify subscription",
+        },
+        { status: response.status }
+      );
+    }
 
     console.log(
       "PAYPAL SUBSCRIPTION:",

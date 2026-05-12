@@ -12,7 +12,7 @@ export async function connectDB() {
     }
 
     await mongoose.connect(
-      process.env.MONGODB_URI!
+      MONGODB_URI
     );
 
     console.log(

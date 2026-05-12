@@ -180,6 +180,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import SubscriptionButton from "./SubscriptionButton";
 
 import visa from "../public/images/visa-Photoroom.png";
@@ -198,14 +199,12 @@ const premiumFeatures = [
 export default function PricingCard() {
   const [selectedPlan, setSelectedPlan] = useState("express");
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-
-  const planIds = {
-    monthly: "YOUR_MONTHLY_PLAN_ID",
-    express: "YOUR_EXPRESS_PLAN_ID",
-  };
-
+  const monthlyPlanId = process.env.NEXT_PUBLIC_PAYPAL_MONTHLY_PLAN_ID;
+  const expressPlanId =
+    process.env.NEXT_PUBLIC_PAYPAL_EXPRESS_PLAN_ID ||
+    process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID;
   const selectedPlanId =
-    selectedPlan === "monthly" ? planIds.monthly : planIds.express;
+    selectedPlan === "monthly" ? monthlyPlanId : expressPlanId;
 
   return (
     <>
@@ -398,22 +397,28 @@ export default function PricingCard() {
 
             {/* PAYMENT ICONS */}
             <div className="flex justify-center items-center gap-4 sm:gap-6 mt-6">
-              <img
-                src={visa.src}
+              <Image
+                src={visa}
                 className="h-6 sm:h-8 object-contain"
                 alt="visa"
+                width={64}
+                height={32}
               />
 
-              <img
-                src={mastercard.src}
+              <Image
+                src={mastercard}
                 className="h-8 sm:h-10 object-contain"
                 alt="mastercard"
+                width={80}
+                height={40}
               />
 
-              <img
-                src={paypal.src}
+              <Image
+                src={paypal}
                 className="h-8 sm:h-10 object-contain"
                 alt="paypal"
+                width={80}
+                height={40}
               />
             </div>
           </div>
@@ -445,9 +450,16 @@ export default function PricingCard() {
               </button>
             </div>
 
-            <SubscriptionButton
-              planId={process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID!}
-            />
+            {selectedPlanId ? (
+              <SubscriptionButton
+                planId={selectedPlanId}
+              />
+            ) : (
+              <p className="rounded-md border border-yellow-500/40 bg-yellow-500/10 px-3 py-2 text-sm text-yellow-200">
+                Missing plan ID. Set `NEXT_PUBLIC_PAYPAL_PLAN_ID` or dedicated
+                monthly/express plan IDs in your env.
+              </p>
+            )}
           </div>
         </div>
       )}

@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       received: true,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Webhook failed" },
       { status: 500 }

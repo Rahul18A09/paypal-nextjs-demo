@@ -2,29 +2,20 @@
 
 import { useEffect, useState } from "react";
 
+type SubscriptionDetails = {
+  id?: string;
+  status?: string;
+};
+
 export default function SuccessPage() {
   const [details, setDetails] =
-    useState<any>(null);
+    useState<SubscriptionDetails | null>(
+      null
+    );
 
-  useEffect(() => {
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
-
-    const subscriptionId =
-      params.get("subscription_id");
-
-    if (subscriptionId) {
-      getSubscriptionDetails(
-        subscriptionId
-      );
-    }
-  }, []);
-
-  async function getSubscriptionDetails(
+  const getSubscriptionDetails = async (
     subscriptionId: string
-  ) {
+  ) => {
     try {
       const response =
         await fetch(
@@ -38,7 +29,8 @@ export default function SuccessPage() {
             },
 
             body: JSON.stringify({
-              subscriptionId,
+              subscriptionID:
+                subscriptionId,
             }),
           }
         );
@@ -50,7 +42,24 @@ export default function SuccessPage() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  useEffect(() => {
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const subscriptionId =
+      params.get("subscription_id");
+
+    if (subscriptionId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      getSubscriptionDetails(
+        subscriptionId
+      );
+    }
+  }, []);
 
   return (
     <div
