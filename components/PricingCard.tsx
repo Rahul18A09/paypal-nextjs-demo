@@ -162,7 +162,7 @@
 //                 ×
 //               </button>
 //             </div>
-      
+
 //             {/* <SubscriptionButton planId={selectedPlanId} /> */}
 //             <SubscriptionButton
 //   planId={process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID!}
@@ -175,25 +175,30 @@
 //   );
 // }
 
-
-
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
 import SubscriptionButton from "./SubscriptionButton";
+import { CircleCheckBig } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import visa from "../public/images/visa-Photoroom.png";
 import mastercard from "../public/images/mastercard-Photoroom.png";
 import paypal from "../public/images/PayPal-Photoroom.png";
 
 const premiumFeatures = [
-  "Acceptance of Terms & Age Restriction: By using ProCVCreator, you agree to these terms.",
-  "We provide a platform for creating, editing, and downloading professional career documents. You must be at least 16 years old to use this service and create an account.",
-  "Subscription, Cancellation & Refunds (Crucial)",
-  "7-Day Money-Back Guarantee: We offer a no-questions-asked 7-day refund policy. If you are not satisfied with the platform, simply email us at support@procvcreator.com within 7 days of your first payment, and we will refund you in full.",
-  "After 7 Days: Once the 7-day window has passed, we do not offer refunds. However, you may cancel your subscription at any time to prevent future charges.",
-  "Governing Law: These terms and your use of ProCVCreator are governed by the laws of England and Wales.",
+  "ATS-Friendly PDF Download (Passes Robot Filters)",
+  "Expert-Approved Resume Templates that get Interviews",
+  "Unlimited Cover Letter Templates",
+  "Cancel any time",
+  "Secure Payment via PayPal",
+  "Free resume critique from an HR expert",
+  "Full access to ProCVCreator",
+  "Contact Support Team CV – reach out to our team for direct help with your CV and profile.",
+  "ATS-compliant formatting with high-value Business Analyst keywords so your CV passes automated filters.",
+  "Optimising your LinkedIn profile so it is aligned with your new CV and captures recruiter attention.",
+  "Organising and targeting your applications so you consistently apply to the right Business Analyst roles.",
 ];
 
 export default function PricingCard() {
@@ -239,8 +244,11 @@ export default function PricingCard() {
           {/* PLAN OPTIONS */}
           <div
             className="
-              border-t border-b border-[#f1cfd5]
-              grid grid-cols-1 sm:grid-cols-2
+               border border-[#f1cfd5]
+                rounded-2xl
+                overflow-hidden
+                grid grid-cols-1 sm:grid-cols-2
+                mx-5 sm:mx-8
             "
           >
             {/* MONTHLY */}
@@ -253,11 +261,7 @@ export default function PricingCard() {
                 cursor-pointer
                 transition
                 border-b sm:border-b-0 sm:border-r border-[#f1cfd5]
-                ${
-                  selectedPlan === "monthly"
-                    ? "bg-[#fffafb]"
-                    : "bg-white"
-                }
+                ${selectedPlan === "monthly" ? "bg-[#fffafb]" : "bg-white"}
               `}
             >
               <div
@@ -286,9 +290,7 @@ export default function PricingCard() {
                   $11.99
                 </div>
 
-                <p className="text-sm sm:text-[18px] text-gray-500">
-                  /Month
-                </p>
+                <p className="text-sm sm:text-[18px] text-gray-500">/Month</p>
               </div>
             </div>
 
@@ -301,11 +303,7 @@ export default function PricingCard() {
                 py-5 sm:py-6
                 cursor-pointer
                 transition
-                ${
-                  selectedPlan === "express"
-                    ? "bg-[#fffafb]"
-                    : "bg-white"
-                }
+                ${selectedPlan === "express" ? "bg-[#fffafb]" : "bg-white"}
               `}
             >
               <div
@@ -349,15 +347,15 @@ export default function PricingCard() {
                   <div className="mt-1 min-w-[24px]">
                     <div
                       className="
-                        w-5 h-5 sm:w-6 sm:h-6
-                        rounded-full
-                        border border-[#d94d68]
-                        flex items-center justify-center
-                      "
+                      w-6 h-6
+                      flex items-center justify-center
+                      shrink-0"
                     >
-                      <span className="text-[#d94d68] text-[12px] sm:text-[14px]">
-                        ✓
-                      </span>
+                      <CircleCheckBig
+                        size={22}
+                        strokeWidth={2}
+                        className="text-[#d94d68]"
+                      />
                     </div>
                   </div>
 
@@ -380,19 +378,24 @@ export default function PricingCard() {
             <button
               onClick={() => setShowCheckoutModal(true)}
               className="
-                w-full
-                bg-[#BE4763]
-                hover:bg-[#a53d56]
-                transition
-                text-white
-                py-4 sm:py-5
-                rounded-full
-                text-[18px]
-                sm:text-[22px]
-                font-semibold
-              "
+              w-full
+              bg-[#4b5565]
+              hover:bg-[#424b59]
+              transition-all
+              duration-200
+              text-white
+              rounded-full
+              px-7
+              py-5
+              flex
+              items-center
+              justify-between
+              text-[20px]
+              font-semibold"
             >
-              Start for {selectedPlan === "monthly" ? "$11.99" : "$7.99"}
+              <span>Current Plan - Go to Dashboard</span>
+
+              <ArrowRight size={28} strokeWidth={2.5} />
             </button>
 
             {/* PAYMENT ICONS */}
@@ -451,9 +454,7 @@ export default function PricingCard() {
             </div>
 
             {selectedPlanId ? (
-              <SubscriptionButton
-                planId={selectedPlanId}
-              />
+              <SubscriptionButton planId={selectedPlanId} />
             ) : (
               <p className="rounded-md border border-yellow-500/40 bg-yellow-500/10 px-3 py-2 text-sm text-yellow-200">
                 Missing plan ID. Set `NEXT_PUBLIC_PAYPAL_PLAN_ID` or dedicated
